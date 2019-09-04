@@ -29,7 +29,7 @@ routes.delete('/meetapp/:id', MeetappController.delete);
 routes.put('/meetapp/:id', MeetappController.update);
 routes.get('/organizing', OrganizingController.store);
 
-routes.get('/subscriptions', OrganizingController.store);
+routes.get('/subscriptions', SubscriptionController.index);
 routes.post('/meetapp/:meetappId/subscription', SubscriptionController.store);
 
 export default routes;
