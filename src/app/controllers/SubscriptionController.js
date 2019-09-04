@@ -5,7 +5,8 @@ import User from '../models/User';
 import Subscription from '../models/Subscription';
 import File from '../models/File';
 
-import Mail from '../../lib/Mail';
+import SubscriptionMail from '../jobs/SubscriptionMail';
+import Queue from '../../lib/Queue';
 
 class SubscriptionController {
   async store(req, res) {
@@ -56,16 +57,9 @@ class SubscriptionController {
       user_id: user.id,
     });
 
-    await Mail.sendMail({
-      to: `${meetapp.organizer.name} <${meetapp.organizer.email}>`,
-      subject: `Você tem um novo inscrito para uns de seus meetapps.`,
-      template: 'subscription',
-      context: {
-        organizer: meetapp.organizer.name,
-        meetapp: meetapp.title,
-        user: user.name,
-        email: user.email,
-      },
+    await Queue.add(SubscriptionMail.key, {
+      meetapp,
+      user,
     });
 
     return res.json(subscribe);
