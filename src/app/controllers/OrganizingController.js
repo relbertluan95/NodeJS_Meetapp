@@ -5,7 +5,8 @@ class OrganizingController {
   async store(req, res) {
     const meetapp = await Meetapp.findAll({
       where: { user_id: req.userId },
-      attributes: ['id', 'title', 'description', 'location', 'date'],
+      order: ['date'],
+      attributes: ['id', 'title', 'description', 'location', 'date', 'past'],
       include: [
         {
           model: File,

@@ -9,6 +9,12 @@ class Meetapp extends Model {
         description: Sequelize.STRING,
         location: Sequelize.STRING,
         date: Sequelize.STRING,
+        past: {
+          type: Sequelize.VIRTUAL,
+          get() {
+            return isBefore(this.date, new Date());
+          },
+        },
       },
       {
         sequelize,

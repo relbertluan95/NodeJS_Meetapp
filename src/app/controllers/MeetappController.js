@@ -58,7 +58,7 @@ class MeetappController {
 
     const meetups = await Meetapp.findAll({
       where,
-      attributes: ['id', 'title', 'description', 'location', 'date'],
+      attributes: ['id', 'title', 'description', 'location', 'date', 'past'],
       include: [
         {
           model: User,
@@ -118,7 +118,7 @@ class MeetappController {
       return res.status(400).json({ error: 'Past dates are not permitted' });
     }
 
-    if (isBefore(meetapp.date, new Date())) {
+    if (meetapp.past) {
       return res.status(400).json({ error: "Can't update past meetups." });
     }
 
