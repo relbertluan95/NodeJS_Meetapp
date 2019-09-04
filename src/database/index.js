@@ -3,8 +3,10 @@ import Sequelize from 'sequelize';
 import databaseConfig from '../config/database';
 
 import User from '../app/models/User';
+import File from '../app/models/File';
+import Meetapp from '../app/models/Meetapp';
 
-const models = [User];
+const models = [User, File, Meetapp];
 
 class Database {
   constructor() {
@@ -15,6 +17,9 @@ class Database {
 
   init() {
     models.forEach(model => model.init(this.connection));
+    models.forEach(
+      model => model.associate && model.associate(this.connection.models)
+    );
   }
 }
 
