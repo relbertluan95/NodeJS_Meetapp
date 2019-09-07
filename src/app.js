@@ -3,9 +3,11 @@ import 'dotenv/config';
 import express from 'express';
 import * as Sentry from '@sentry/node';
 import Youch from 'youch';
+import cors from 'cors';
 import sentryConfig from './config/sentry';
 import 'express-async-errors';
 import routes from './routes';
+import path from 'path';
 
 import './database';
 
@@ -22,6 +24,11 @@ class App {
 
   middlewares() {
     this.server.use(Sentry.Handlers.requestHandler());
+    this.server.use(cors());
+    this.server.use(
+      '/files',
+      express.static(path.resolve(__dirname, '..', 'tmp', 'uploads'))
+    );
     this.server.use(express.json());
   }
 

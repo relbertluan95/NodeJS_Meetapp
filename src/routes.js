@@ -28,6 +28,7 @@ routes.get('/meetapp', MeetappController.index);
 routes.delete('/meetapp/:id', MeetappController.delete);
 routes.put('/meetapp/:id', MeetappController.update);
 routes.get('/organizing', OrganizingController.store);
+routes.get('/organizing/:id', OrganizingController.index);
 
 routes.get('/subscriptions', SubscriptionController.index);
 routes.post('/meetapp/:meetappId/subscription', SubscriptionController.store);
