@@ -58,6 +58,7 @@ class MeetappController {
 
     const meetups = await Meetapp.findAll({
       where,
+      order: [['date', 'DESC']],
       attributes: ['id', 'title', 'description', 'location', 'date', 'past'],
       include: [
         {

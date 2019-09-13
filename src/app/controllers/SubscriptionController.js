@@ -38,6 +38,7 @@ class SubscriptionController {
       include: [
         {
           model: Meetapp,
+          as: 'meetapp',
           required: true,
           where: {
             date: meetapp.date,
@@ -73,6 +74,8 @@ class SubscriptionController {
       include: [
         {
           model: Meetapp,
+          as: 'meetapp',
+          order: [[Meetapp, 'date']],
           where: {
             date: {
               [Op.gt]: new Date(),
@@ -85,11 +88,29 @@ class SubscriptionController {
               as: 'banner',
               attributes: ['id', 'name', 'path', 'url'],
             },
+            {
+              model: User,
+              as: 'organizer',
+              attributes: ['id', 'name', 'email'],
+            },
           ],
         },
       ],
-      order: [[Meetapp, 'date']],
     });
+
+    return res.json(meetapp);
+  }
+
+  async delete(req, res) {
+    const meetapp = await Subscription.findByPk(req.params.id);
+
+    if (meetapp.user_id !== req.userId) {
+      return res.status(401).json({
+        error: "You don't have permission to cancel this meetapp",
+      });
+    }
+
+    await meetapp.destroy();
 
     return res.json(meetapp);
   }
