@@ -30,11 +30,16 @@ class OrganizingController {
   }
 
   async store(req, res) {
+    const page = req.query.page || 1;
+
     const meetapp = await Meetapp.findAll({
       where: { user_id: req.userId },
-      order: ['date'],
+      order: [['date', 'DESC']],
       attributes: ['id', 'title', 'description', 'location', 'date', 'past'],
+      limit: 10,
+      offset: 10 * page - 10,
     });
+
     return res.json(meetapp);
   }
 }
